@@ -5,9 +5,11 @@ namespace Order.Service.Infrastructure.RabbitMQ;
 
 public static class RabbitMqExtensions
 {
-    public static void AddRabbitMqEventBus(this IServiceCollection services)
+    public static void AddRabbitMqEventBus(this IServiceCollection services, IConfigurationManager configuration)
     {
-        services.AddSingleton<IRabbitMqConnection>(new RabbitMqConnection());
+        var rabbitMqOptions = new RabbitMqOptions();
+        configuration.GetSection(RabbitMqOptions.RabbitMqSectionName).Bind(rabbitMqOptions);
+        services.AddSingleton<IRabbitMqConnection>(new RabbitMqConnection(rabbitMqOptions));
         services.AddScoped<IEventBus, RabbitMqEventBus>();
     }
 }

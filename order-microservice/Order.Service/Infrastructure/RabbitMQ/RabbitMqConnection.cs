@@ -5,16 +5,18 @@ namespace Order.Service.Infrastructure.RabbitMq;
 public class RabbitMqConnection : IDisposable, IRabbitMqConnection
 {
     private IConnection? _connection;
+    private readonly RabbitMqOptions _options;
     public IConnection Connection => _connection!;
-    public RabbitMqConnection()
+    public RabbitMqConnection(RabbitMqOptions options)
     {
+        _options = options;
         InitializeConnection();
     }
     private void InitializeConnection()
     {
         var factory = new ConnectionFactory
         {
-            HostName = "localhost"
+            HostName = _options.HostName
         };
         _connection = factory.CreateConnection();
     }
