@@ -1,6 +1,9 @@
 using Basket.Service.ApiModels;
+using Basket.Service.Infrastructure.Data;
 using Basket.Service.Models;
 using Microsoft.AspNetCore.Mvc;
+
+namespace Basket.Service.Endpoints;
 
 public static class BasketApiEndpoints
 {
