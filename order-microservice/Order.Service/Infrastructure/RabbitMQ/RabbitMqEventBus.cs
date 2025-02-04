@@ -6,6 +6,7 @@ namespace Order.Service.Infrastructure.RabbitMq;
 
 public class RabbitMqEventBus : IEventBus
 {
+    private const string ExchangeName = "ecommerce-exchange";
 
     private readonly IRabbitMqConnection _rabbitMqConnection;
 
@@ -16,17 +17,20 @@ public class RabbitMqEventBus : IEventBus
 
     public Task PublishAsync(Event @event)
     {
-        var routingKey = @event.GetType().Name;
-
         using var channel = _rabbitMqConnection.Connection.CreateModel();
 
-        channel.QueueDeclare(queue: routingKey, false, false, false, null);
+        channel.ExchangeDeclare(
+            exchange: ExchangeName,
+            type: "fanout",
+            durable: false,
+            autoDelete: false,
+            null);
 
         var body = JsonSerializer.SerializeToUtf8Bytes(@event, @event.GetType());
 
         channel.BasicPublish(
-            exchange: string.Empty,
-            routingKey: routingKey,
+            exchange: ExchangeName,
+            routingKey: string.Empty,
             mandatory: false,
             basicProperties: null,
             body: body);
