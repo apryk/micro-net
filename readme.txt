@@ -8,3 +8,12 @@ docker build -t basket.service:v3.0 -f basket-microservice/Basket.Service/Docker
 # run docker images
 docker run -it --rm -p 8001:8080 -e RabbitMq__HostName=host.docker.internal order.service:v2.0
 docker run -it --rm -p 8000:8080 -e RabbitMq__HostName=host.docker.internal basket.service:v3.0
+
+
+
+# package nuget 
+dotnet pack
+
+# copy packaged nuget
+dotnet nuget push ECommerce.Shared.1.1.0.nupkg -s C:devmicroservices-bookchapter-04-cross-cutting-concernslocal-nuget-packages
+
