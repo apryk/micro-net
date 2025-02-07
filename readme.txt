@@ -27,3 +27,11 @@ docker run -it --rm -p 8000:8080 -e RabbitMq__HostName=host.docker.internal bask
 dotnet ef migrations add SeedProductType -o Infrastructure\Data\EntityFramework\Migrations
 from within product-microservice/Product.Service run
 dotnet ef database update
+
+
+docker rm -f sql rabbitmq
+
+docker compose up sql rabbitmq redis
+
+docker compose up product basket --build
+
