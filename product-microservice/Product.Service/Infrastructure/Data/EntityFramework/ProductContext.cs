@@ -5,7 +5,11 @@ namespace Product.Service.Infrastructure.Data.EntityFramework;
 
 internal class ProductContext : DbContext, IProductStore
 {
-    public ProductContext(DbContextOptions<ProductContext> options) : base(options) {}
+    public ProductContext(DbContextOptions<ProductContext> options)
+        : base(options)
+    {    
+    }
+
     public DbSet<Models.Product> Products { get; set; }
     public DbSet<ProductType> ProductTypes { get; set; }
 
@@ -17,21 +21,29 @@ internal class ProductContext : DbContext, IProductStore
 
     public async Task<Models.Product?> GetById(int id)
     {
-        return await FindAsync<Models.Product>(id);
+        return await Products
+            .Include(p => p.ProductType)
+            .AsSplitQuery()
+            .FirstOrDefaultAsync(p => p.Id == id);
     }
+
     public async Task CreateProduct(Models.Product product)
     {
         Products.Add(product);
+
         await SaveChangesAsync();
     }
+
     public async Task UpdateProduct(Models.Product product)
     {
         var existingProduct = await FindAsync<Models.Product>(product.Id);
+
         if (existingProduct is not null)
         {
             existingProduct.Name = product.Name;
             existingProduct.Price = product.Price;
             existingProduct.Description = product.Description;
+
             await SaveChangesAsync();
         }
     }

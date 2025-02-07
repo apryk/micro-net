@@ -22,3 +22,8 @@ docker build -t basket.service:v4.0 -f basket-microservice/Basket.Service/Docker
 
 docker run -it --rm -p 8001:8080 -e RabbitMq__HostName=host.docker.internal order.service:v3.0
 docker run -it --rm -p 8000:8080 -e RabbitMq__HostName=host.docker.internal basket.service:v4.0
+
+
+dotnet ef migrations add SeedProductType -o Infrastructure\Data\EntityFramework\Migrations
+from within product-microservice/Product.Service run
+dotnet ef database update
