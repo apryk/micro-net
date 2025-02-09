@@ -2,6 +2,6 @@
 
 internal interface IOrderStore
 {
-    void CreateOrder(Models.Order order);
-    Models.Order? GetCustomerOrderById(string customerId, string orderId);
+    Task CreateOrder(Models.Order order);
+    Task<Models.Order?> GetCustomerOrderById(string customerId, string orderId);
 }
