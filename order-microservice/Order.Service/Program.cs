@@ -14,7 +14,7 @@ builder.Services.AddRabbitMqEventBus(builder.Configuration)
 
 var app = builder.Build();
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(); 
 
 if (app.Environment.IsDevelopment())
 {
@@ -27,3 +27,4 @@ app.UseHttpsRedirection();
 
 app.Run();
 
+public partial class Program { }

@@ -35,3 +35,4 @@ docker compose up sql rabbitmq redis
 
 docker compose up product basket --build
 
+docker compose up product --build
