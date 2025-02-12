@@ -29,6 +29,8 @@ public static class RabbitMqStartupExtensions
 
         services.AddHostedService<RabbitMqHostedService>();
 
+        services.AddSingleton<RabbitMqTelemetry>();
+
         return services;
     }
 }

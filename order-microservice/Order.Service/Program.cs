@@ -1,4 +1,5 @@
 using ECommerce.Shared.Infrastructure.RabbitMq;
+using ECommerce.Shared.Observability;
 using Order.Service.Endpoints;
 using Order.Service.Infrastructure.Data.EntityFramework;
 
@@ -11,6 +12,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddRabbitMqEventBus(builder.Configuration)
     .AddRabbitMqEventPublisher();
+
+builder.Services.AddOpenTelemetryTracing("Order", builder.Configuration, (traceBuilder) => 
+        traceBuilder.WithSqlInstrumentation())
+    .AddOpenTelemetryMetrics();
 
 var app = builder.Build();
 app.UseSwagger();

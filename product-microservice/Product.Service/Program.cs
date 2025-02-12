@@ -5,7 +5,8 @@ using Product.Service.Infrastructure.Data.EntityFramework;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenTelemetryTracing("Product", (traceBuilder) => traceBuilder.WithSqlInstrumentation());
+builder.Services.AddOpenTelemetryTracing("Product", builder.Configuration, (traceBuilder) => 
+    traceBuilder.WithSqlInstrumentation());
 
 builder.Services.AddSqlServerDatastore(builder.Configuration);
 
