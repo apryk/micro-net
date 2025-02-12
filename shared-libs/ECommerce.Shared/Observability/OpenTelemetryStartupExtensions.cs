@@ -1,12 +1,13 @@
 ﻿using ECommerce.Shared.Infrastructure.RabbitMq;
 using ECommerce.Shared.Observability.Metrics;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using OpenTelemetry.Metrics;
-using Microsoft.Extensions.Configuration;
+
 
 namespace ECommerce.Shared.Observability;
 public static class OpenTelemetryStartupExtensions
@@ -45,7 +46,8 @@ public static class OpenTelemetryStartupExtensions
                 builder
                     .AddConsoleExporter()
                     .AddAspNetCoreInstrumentation()
-                    .AddMeter(serviceName);
+                    .AddMeter(serviceName)
+                    .AddPrometheusExporter();
                     
                 customMetrics?.Invoke(builder);
             });
@@ -53,4 +55,7 @@ public static class OpenTelemetryStartupExtensions
 
     public static TracerProviderBuilder WithSqlInstrumentation(this TracerProviderBuilder builder) => 
         builder.AddSqlClientInstrumentation();
+
+    public static void UsePrometheusExporter(this WebApplication webApplication) => 
+        webApplication.UseOpenTelemetryPrometheusScrapingEndpoint();
 }
