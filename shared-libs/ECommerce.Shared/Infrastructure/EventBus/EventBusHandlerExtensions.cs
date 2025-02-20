@@ -9,7 +9,7 @@ public static class EventBusHandlerExtensions
     where THandler : class, IEventHandler<TEvent>
     {
         serviceCollection.AddKeyedTransient<IEventHandler, THandler>(typeof(TEvent));
-
+        
         serviceCollection.Configure<EventHandlerRegistration>(o =>
         {
             o.EventTypes[typeof(TEvent).Name] = typeof(TEvent);
